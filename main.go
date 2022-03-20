@@ -10,6 +10,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+
 func main() {
 
 	port := os.Getenv("MY_APP_PORT")
@@ -22,19 +23,28 @@ func main() {
 	database, _ := sql.Open("sqlite3", "./Chinook_Sqlite.db")
 
 
-	e.GET("/tracks", func(c echo.Context) error {
-		// return c.String(http.StatusOK, "GET Landing")
-	
+	e.GET("/tracks/:name", func(c echo.Context) error {
+
+		// get search string from param
+		getName := c.Param("name")
+		// slice of string to hold track names from search results
 		var tracks []string
-		rows, _ := database.Query("SELECT Name, Composer FROM Track WHERE name LIKE '%snowball%';")
+		// query database with string from URL
+		rows, _ := database.Query("SELECT TrackId, Name, AlbumId, Composer FROM Track WHERE name LIKE '%" + getName +"%';")
+		// variables for database field scans
 		var name string
+		var id int
+		var alId int
 		var comp string
 		for rows.Next(){
-			rows.Scan(&name, &comp)
+			rows.Scan(&id, &name, &alId, &comp)
 			fmt.Println("Name: " + name + " " + "Composor: " + comp)
+			// append track to tracks slice
 			tracks = append(tracks, name)
+
 		}
-	
+		
+		// return slice of string in json format with 200 status
 		return c.JSON(http.StatusOK, tracks)
 
 	})
