@@ -37,23 +37,25 @@ func main() {
 		var songs []Song
 		// query database with string from URL
 		rows, _ := database.Query("SELECT TrackId, Name, AlbumId, Composer FROM Track WHERE name LIKE '%" + getName +"%';")
-		// variables for database field scans
-		var name string
-		var id int
-		var alId int
-		var comp string
+		
 		for rows.Next(){
-			rows.Scan(&id, &name, &alId, &comp)
+			// Some db entries have empty values for artist so declaring variables here wipes them after each row to empty out the variables 
+			var name string
+			var id int
+			var albId int
+			var comp string
+			
+			rows.Scan(&id, &name, &albId, &comp)
 			// take album ID from track query and search for it to get album title
-			rows, _ := database.Query("SELECT Title FROM Album WHERE AlbumId LIKE " + strconv.Itoa(alId) +";")
-			var alTitle string
+			rows, _ := database.Query("SELECT Title FROM Album WHERE AlbumId LIKE " + strconv.Itoa(albId) +";")
+			var albTitle string
 			for rows.Next(){
-				rows.Scan(&alTitle)
+				rows.Scan(&albTitle)
 			}
 			
-			fmt.Println("Track Name: " + name + " " + "Composor: " + comp + "Album: " + alTitle)
+			fmt.Println("Track Name: " + name + " " + "Composor: " + comp + "Album: " + albTitle)
 			// append track to song slice
-			songs = append(songs, Song{Artist: comp, Title: name, Album: alTitle})
+			songs = append(songs, Song{Artist: comp, Title: name, Album: albTitle})
 
 		}
 		
