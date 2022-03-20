@@ -5,11 +5,17 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/labstack/echo"
 	_ "github.com/mattn/go-sqlite3"
 )
 
+type Song struct {
+	Artist string
+	Title string
+	Album string
+}
 
 func main() {
 
@@ -27,8 +33,8 @@ func main() {
 
 		// get search string from param
 		getName := c.Param("name")
-		// slice of string to hold track names from search results
-		var tracks []string
+		// slice of song to hold track info from search results
+		var songs []Song
 		// query database with string from URL
 		rows, _ := database.Query("SELECT TrackId, Name, AlbumId, Composer FROM Track WHERE name LIKE '%" + getName +"%';")
 		// variables for database field scans
@@ -38,14 +44,21 @@ func main() {
 		var comp string
 		for rows.Next(){
 			rows.Scan(&id, &name, &alId, &comp)
-			fmt.Println("Name: " + name + " " + "Composor: " + comp)
-			// append track to tracks slice
-			tracks = append(tracks, name)
+			// take album ID from track query and search for it to get album title
+			rows, _ := database.Query("SELECT Title FROM Album WHERE AlbumId LIKE " + strconv.Itoa(alId) +";")
+			var alTitle string
+			for rows.Next(){
+				rows.Scan(&alTitle)
+			}
+			
+			fmt.Println("Track Name: " + name + " " + "Composor: " + comp + "Album: " + alTitle)
+			// append track to song slice
+			songs = append(songs, Song{Artist: comp, Title: name, Album: alTitle})
 
 		}
 		
 		// return slice of string in json format with 200 status
-		return c.JSON(http.StatusOK, tracks)
+		return c.JSON(http.StatusOK, songs)
 
 	})
 
