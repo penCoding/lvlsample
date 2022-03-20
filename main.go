@@ -20,16 +20,23 @@ func main() {
 	e := echo.New()
 
 	database, _ := sql.Open("sqlite3", "./Chinook_Sqlite.db")
-	rows, _ := database.Query("Select name FROM Track")
-	var name string
-	for rows.Next(){
-		rows.Scan(&name)
-		fmt.Println("Name: " + name)
-	}
 
 
 	e.GET("/tracks", func(c echo.Context) error {
-		return c.String(http.StatusOK, "GET Landing")
+		// return c.String(http.StatusOK, "GET Landing")
+	
+		var tracks []string
+		rows, _ := database.Query("SELECT Name, Composer FROM Track WHERE name LIKE '%snowball%';")
+		var name string
+		var comp string
+		for rows.Next(){
+			rows.Scan(&name, &comp)
+			fmt.Println("Name: " + name + " " + "Composor: " + comp)
+			tracks = append(tracks, name)
+		}
+	
+		return c.JSON(http.StatusOK, tracks)
+
 	})
 
 	e.Logger.Print("Listening on port 4041")
