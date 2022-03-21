@@ -21,8 +21,8 @@ type Song struct {
 }
 
 func main() {
-
-	// logging to stdout
+	
+	// logging to standard out
 	log.SetOutput(os.Stdout)
 	log.SetFormatter(&log.JSONFormatter{})
 
