@@ -11,6 +11,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// handler function
 func searchTracks(c echo.Context) error {
 
 	// setting db driver and db location

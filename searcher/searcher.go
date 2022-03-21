@@ -17,7 +17,7 @@ type Song struct {
 }
 
 func Start() {
-	// logging to standard out
+	// logging to stdout and formatting to JSON
 	log.SetOutput(os.Stdout)
 	log.SetFormatter(&log.JSONFormatter{})
 
@@ -30,6 +30,7 @@ func Start() {
 	// echo Server
 	e := echo.New()
 
+	// set endpoint path and handler function
 	e.GET("/tracks/:name", searchTracks)
 
 	e.Logger.Print("Listening on port 4041")
