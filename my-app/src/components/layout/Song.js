@@ -4,7 +4,7 @@ export const Song = ({ song }) => {
   return (
     <section>
       <div className='col text-center'>
-        <div className='card text-center border-primary shadow g-4 mb-3'>
+        <div className='card text-center border-primary shadow g-4 mb-5'>
           <div className='card-header pt-3'>
             <h5>Track: {song.Title}</h5>
           </div>
