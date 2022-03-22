@@ -51,7 +51,11 @@ const App = () => {
           />
         </Routes>
       </Fragment>
-      <div className='container col-5'>{renderedSongs}</div>
+      <div className='container'>
+        <div className='row ml-lg-5 mt-lg-5 row-cols-1 row-cols-xs-1 row-cols-sm-2 rows-cols-md-2 g-4'>
+          {renderedSongs}
+        </div>
+      </div>
       {noResults && (
         <div class='container text-center'>
           <h3>Oops...No tracks found with that in their title</h3>
