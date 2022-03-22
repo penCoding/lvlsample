@@ -1,34 +1,49 @@
+import React, { useState } from 'react';
 import { Fragment } from 'react';
-import { render } from 'react-dom';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Switch,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Landing from './components/layout/Landing';
 import Search from './components/layout/Search';
-import Results from './components/layout/Results';
+import Song from './components/layout/Song';
 import './App.css';
 
-const App = () => (
-  <Router>
-    <Fragment>
-      <Routes>
-        <Route
-          exact
-          path='/'
-          element={
-            <>
-              <Landing />
-              <Search />
-              <Results />
-            </>
-          }
-        />
-      </Routes>
-    </Fragment>
-  </Router>
-);
+const App = () => {
+  const [songs, setSongs] = useState([]);
+
+  const onSearchSubmit = async (search) => {
+    const res = await fetch(`http://localhost:4041/tracks/${search}`);
+    const songsArray = await res.json();
+    setSongs(songsArray);
+    console.log('New Search submit', search);
+  };
+
+  const clearResults = () => setSongs([]);
+
+  const renderedSongs = songs.map((song, i) => {
+    return <Song song={song} key={i} />;
+  });
+
+  return (
+    <Router>
+      <Fragment>
+        <Routes>
+          <Route
+            exact
+            path='/'
+            element={
+              <>
+                <Landing />
+                <Search
+                  onSearchSubmit={onSearchSubmit}
+                  clearResults={clearResults}
+                />
+              </>
+            }
+          />
+        </Routes>
+      </Fragment>
+      <div className='container col-5'>{renderedSongs}</div>
+    </Router>
+  );
+};
 
 export default App;
