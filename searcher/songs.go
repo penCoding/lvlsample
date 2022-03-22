@@ -26,7 +26,7 @@ func searchTracks(c echo.Context) error {
 	var songs []Song
 
 	// query database using search parameter
-	rows, err := database.Query("SELECT TrackId, Name, AlbumId, Composer FROM Track WHERE name LIKE '%" + getName + "%';")
+	rows, err := database.Query("SELECT TrackId, Name, AlbumId, Milliseconds, Bytes, Composer FROM Track WHERE name LIKE '%" + getName + "%';")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,10 +36,12 @@ func searchTracks(c echo.Context) error {
 		var name string
 		var id int
 		var albId int
+		var len int
+		var size int
 		var comp string
 
 		// scan row and fill variables
-		rows.Scan(&id, &name, &albId, &comp)
+		rows.Scan(&id, &name, &albId, &len, &size, &comp)
 
 		// take album ID from track query and use it to get album title
 		rows, err := database.Query("SELECT Title FROM Album WHERE AlbumId = " + strconv.Itoa(albId) + ";")
@@ -53,7 +55,7 @@ func searchTracks(c echo.Context) error {
 		}
 
 		// create song instance
-		s := Song{Composor: comp, Title: name, Album: albTitle}
+		s := Song{Composor: comp, Title: name, Album: albTitle, Size: size, Len: len }
 
 		// append track to song slice
 		songs = append(songs, s)

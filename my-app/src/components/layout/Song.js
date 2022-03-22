@@ -1,12 +1,40 @@
 import React from 'react';
 
+// function for converting milliseconds to minutes and seconds
+const convertMillsToDuration = (mills) => {
+  var minutes = Math.floor(mills / 60000);
+  var seconds = ((mills % 60000) / 1000).toFixed(0);
+  //ES6 interpolated literals/template literals
+  //If seconds is less than 10 put a zero in front.
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
+
+// function for converting bytes to kb
+function formatBytes(bytes, decimals = 2) {
+  if (bytes === 0) return '0 Bytes';
+
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
 export const Song = ({ song }) => {
+  // check for no composor since we know some entries are blank
   var noComp;
   if (song.Composor !== '') {
     noComp = false;
   } else {
     noComp = true;
   }
+
+  // convert miliseconds
+  var length = convertMillsToDuration(song.Len);
+  // convert bytes
+  var size = formatBytes(song.Size, 0);
 
   return (
     <section>
@@ -26,7 +54,9 @@ export const Song = ({ song }) => {
             </span>
             <p className='card-text'>{song.Album}</p>
           </div>
-          <div className='card-footer text-muted'>Duration: Size:</div>
+          <div className='card-footer text-muted'>
+            Duration: {length} | File Size: {size}
+          </div>
         </div>
       </div>
     </section>

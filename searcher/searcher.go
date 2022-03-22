@@ -14,6 +14,8 @@ type Song struct {
 	Composor string
 	Title string
 	Album string
+	Size int
+	Len int
 }
 
 func Start() {
