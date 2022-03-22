@@ -2,7 +2,6 @@ package srch
 
 import (
 	"database/sql"
-	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -60,13 +59,13 @@ func searchTracks(c echo.Context) error {
 		songs = append(songs, s)
 
 		// convert struct to JSON for logging
-		data, err := json.Marshal(s)
-		if err != nil {
-			log.Fatal(err)
-		}
+		// data, err := json.Marshal(s)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
 
 		// log song information
-		log.Printf("%s", data)
+		// log.Printf("%s", data)
 	}
 
 	// return slice of string in json format with 200 status code
