@@ -52,7 +52,7 @@ const App = () => {
         </Routes>
       </Fragment>
       <div className='container'>
-        <div className='row ml-lg-5 mt-lg-5 row-cols-1 row-cols-xs-1 row-cols-sm-2 rows-cols-md-2 g-4'>
+        <div className='row mt-lg-5 row-cols-xs-1 row-cols-sm-1 row-cols-md-2 g-4'>
           {renderedSongs}
         </div>
       </div>
