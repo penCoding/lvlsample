@@ -1,32 +1,8 @@
 import React from 'react';
 
-// function for converting milliseconds to minutes and seconds
-const convertMillsToDuration = (mills) => {
-  var minutes = Math.floor(mills / 60000);
-  var seconds = ((mills % 60000) / 1000).toFixed(0);
-  //ES6 interpolated literals/template literals
-  //If seconds is less than 10 put a zero in front.
-  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-};
-
-// function for converting bytes to kb
-function formatBytes(bytes, decimals = 2) {
-  if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
-
 export const Song = ({ song }) => {
   // check for no composor since we know some entries are blank
-  var noComp;
-  if (song.Composor !== '') {
-    noComp = false;
-  } else {
-    noComp = true;
-  }
+  var noComp = checkComp(song.Composor);
 
   // convert miliseconds
   var length = convertMillsToDuration(song.Len);
@@ -59,5 +35,33 @@ export const Song = ({ song }) => {
     </section>
   );
 };
+
+// check for no composor
+function checkComp(composor) {
+  if (composor !== '') {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+// function for converting milliseconds to minutes and seconds
+const convertMillsToDuration = (mills) => {
+  var minutes = Math.floor(mills / 60000);
+  var seconds = ((mills % 60000) / 1000).toFixed(0);
+  //ES6 interpolated literals/template literals
+  //If seconds is less than 10 put a zero in front.
+  return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+};
+
+// function for converting bytes
+function formatBytes(bytes, decimals = 2) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
 
 export default Song;

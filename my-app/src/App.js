@@ -10,11 +10,12 @@ const App = () => {
   // setting up state
   const [songs, setSongs] = useState([]);
 
+  // using fetch to send user input string to backend to use in query
   const onSearchSubmit = async (searchData) => {
     const res = await fetch(`http://localhost:4041/tracks/${searchData}`);
     const songsArray = await res.json();
+    // take response from backend and use to set songs
     setSongs(songsArray);
-    console.log('New Search submit', searchData);
   };
 
   // clear results setting to empty

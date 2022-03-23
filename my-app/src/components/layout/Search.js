@@ -1,11 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
 
 export const Search = ({ onSearchSubmit, clearResults }) => {
+  // state variables for getting user input and debouncing
   const [searchData, setSearchData] = useState('');
-
   const [debouncedSearch, setDebouncedSearch] = useState(searchData);
 
-  // update value after 1 second from the last update of 'debouncedSearch'
+  // update value after .5 second from the last debouncedSearch update
   useEffect(() => {
     const timer = setTimeout(() => setSearchData(debouncedSearch), 500);
     return () => clearTimeout(timer);
@@ -13,9 +13,11 @@ export const Search = ({ onSearchSubmit, clearResults }) => {
 
   // submit a new search
   useEffect(() => {
+    // when onChange is triggered onSearchSubmit runs and takes input value to be fetched from back-end
     if (searchData !== '') {
       onSearchSubmit(searchData);
     } else {
+      // run clearResults to clear song array
       clearResults();
     }
   }, [searchData]);
