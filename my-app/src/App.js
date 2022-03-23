@@ -58,7 +58,7 @@ const App = () => {
         </div>
       </div>
       {noResults && (
-        <div class='container text-center'>
+        <div className='container text-center'>
           <h3>Oops...No tracks found with that in their title</h3>
         </div>
       )}
