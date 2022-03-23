@@ -5,7 +5,7 @@ export const Search = ({ onSearchSubmit, clearResults }) => {
   const [searchData, setSearchData] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState(searchData);
 
-  // update value after .5 second from the last debouncedSearch update
+  // update value after from the last debouncedSearch update
   useEffect(() => {
     const timer = setTimeout(() => setSearchData(debouncedSearch), 100);
     return () => clearTimeout(timer);
@@ -33,7 +33,7 @@ export const Search = ({ onSearchSubmit, clearResults }) => {
                   name='search'
                   value={searchData}
                   onChange={(e) =>
-                    setDebouncedSearch(e.target.value.replace(/^\s/g, ''))
+                    setSearchData(e.target.value.replace(/^\s/g, ''))
                   }
                   type='text'
                   className='form-control'
