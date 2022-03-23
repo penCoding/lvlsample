@@ -27,6 +27,9 @@ go get github.com/labstack/echo/v4
 go get github.com/sirupsen/logrus
 -----------------------------------
 
+In vscode Go extension, Go format tool needed to be set to gofmt to allow importing packages from subdirectories. By default it is set to goimport and goimport has this isssue of removing local imports on save despite being used.
+See https://github.com/joefitzgerald/go-plus/issues/369
+
 ----------------------------------------------------------------------------------------------
 Start Back-end Server ------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
@@ -49,4 +52,6 @@ https://echo.labstack.com
 ____________________________________O/_______
                                     O\
 ⇨ http server started on 127.0.0.1:4041
+
+
 
